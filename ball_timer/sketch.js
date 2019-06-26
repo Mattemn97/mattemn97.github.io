@@ -7,7 +7,7 @@ function preload() {
 
 function setup() {
     createCanvas(1000, 300);
-    background(50);
+    background('#265473');
     setInterval(secondDraw, 1000);
     prima = true;
 }
