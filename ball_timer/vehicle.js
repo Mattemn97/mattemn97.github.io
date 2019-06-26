@@ -4,7 +4,7 @@ function Vehicle(x, y) {
     this.vel = p5.Vector.random2D();
     this.acc = createVector();
     this.r = 8;
-    this.maxspeed = 12.5;
+    this.maxspeed = 15;
     this.maxforce = 1;
     this.visible = true;
 }
