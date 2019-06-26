@@ -37,9 +37,9 @@ Vehicle.prototype.update = function () {
 
 Vehicle.prototype.show = function () {
     if (this.visible) {
-        ctx.stroke('#2d6286');
-        ctx.strokeWeight(this.r);
-        ctx.point(this.pos.x, this.pos.y);
+        stroke(255);
+        strokeWeight(this.r);
+        point(this.pos.x, this.pos.y);
     }
 };
 
@@ -83,33 +83,4 @@ function gettime() {
     if (sec <= 9)
         sec = '0' + sec;
     return hou + ':' + min + ':' + sec;
-}
-
-function secondDraw() {
-    var time = gettime();
-    var points = font.textToPoints(time, 100, 200, 192, {
-        sampleFactor: 0.25
-    });
-
-    if (points.length <= vehicles.length) {
-        for (var k = 0; k < points.length; k++) {
-            vehicles[k].visible = true;
-            var new_pt1 = createVector(points[k].x, points[k].y);
-            vehicles[k].changeTarget(new_pt1.x, new_pt1.y);
-        }
-        for (var j = points.length; j < vehicles.length; j++) {
-            vehicles[j].visible = false;
-        }
-    } else {
-        for (var i = vehicles.length; i < points.length; i++) {
-            vehicles.pop();
-        }
-
-        for (var i = vehicles.length; i < points.length; i++) {
-            var pt = points[i];
-            var vehicle = new Vehicle(pt.x, pt.y);
-            vehicles.push(vehicle);
-        }
-    }
-    console.log("Cambio di tempo: " + time);
 }
