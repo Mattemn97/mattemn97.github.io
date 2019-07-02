@@ -27,6 +27,7 @@ function draw() {
         console.log("Prima");
         console.log("Lunghezza vehicles:" + vehicles.length);
     }
+    background('#265473');
     for (var i = 0; i < vehicles.length; i++) {
         var v = vehicles[i];
         v.behaviors();
