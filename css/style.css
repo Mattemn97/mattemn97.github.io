@@ -1,38 +1,44 @@
 html,body{font-family: "Roboto", sans-serif}
 
-h6 {font-family: "Roboto", sans-serif; font-size: 10pt !important; color:#8cbad9}
-h5 {font-family: "Roboto", sans-serif; font-size: 16pt !important; color:#8cbad9}
-h4 {font-family: "Roboto", sans-serif; font-size: 18pt !important; color:#8cbad9}
-h3 {font-family: "Roboto", sans-serif; font-size: 20pt !important; color:#8cbad9}
-h2 {font-family: "Roboto", sans-serif; font-size: 24pt !important; color:#8cbad9}
-h1 {font-family: "Roboto", sans-serif; font-size: 30pt !important; color:#8cbad9}
+h6 {font-family: "Roboto", sans-serif; font-size: 10pt !important; color : #000}
+h5 {font-family: "Roboto", sans-serif; font-size: 16pt !important; color : #000}
+h4 {font-family: "Roboto", sans-serif; font-size: 18pt !important; color : #000}
+h3 {font-family: "Roboto", sans-serif; font-size: 20pt !important; color : #000}
+h2 {font-family: "Roboto", sans-serif; font-size: 24pt !important; color : #000}
+h1 {font-family: "Roboto", sans-serif; font-size: 30pt !important; color : #000}
 
-.w3-theme-l5 {color:#000 !important; background-color:#f8fbfd !important}
-.w3-theme-l4 {color:#000 !important; background-color:#e8f1f7 !important}
-.w3-theme-l3 {color:#000 !important; background-color:#d1e3f0 !important}
-.w3-theme-l2 {color:#000 !important; background-color:#bad6e8 !important}
-.w3-theme-l1 {color:#000 !important; background-color:#a3c8e0 !important}
-.w3-theme-d1 {color:#fff !important; background-color:#71aad0 !important}
-.w3-theme-d2 {color:#fff !important; background-color:#579ac7 !important}
-.w3-theme-d3 {color:#fff !important; background-color:#3e89bb !important}
-.w3-theme-d4 {color:#fff !important; background-color:#3676a1 !important}
-.w3-theme-d5 {color:#fff !important; background-color:#2d6286 !important}
+.w3-theme-back-blue-light {background-color:#87b2f8 !important}
+.w3-theme-back-blue {background-color:#0e65f1 !important}
+.w3-theme-back-blue-dark {background-color:#073378 !important}
 
-.w3-theme-light {color:#000 !important; background-color:#f8fbfd !important}
-.w3-theme-dark {color:#fff !important; background-color:#2d6286 !important}
-.w3-theme-action {color:#fff !important; background-color:#2d6286 !important}
+.w3-theme-back-red-light {background-color:#f3948c !important}
+.w3-theme-back-red {background-color:#e72918 !important}
+.w3-theme-back-red-dark {background-color:#73150c !important}
 
-.w3-theme-backgd{background-color:#2d6286 !important}
+.w3-theme-back-green-light {background-color:#9de1af !important}
+.w3-theme-back-green {background-color:#3cc360 !important}
+.w3-theme-back-green-dark {background-color:#1e6230 !important}
 
-.w3-theme {color:#000 !important; background-color:#8cbad9 !important}
-.w3-text-theme {color:#8cbad9}
-.w3-border-theme {border-color:#8cbad9 !important}
+.w3-theme-back-yellow-light {background-color:#fdde81 !important}
+.w3-theme-back-yellow {background-color:#fbbc05 !important}
+.w3-theme-back-yellow-dark {background-color:#7e5f02 !important}
 
-.w3-hover-theme:hover {color:#000 !important; background-color:#8cbad9 !important}
-.w3-hover-text-theme:hover {color:#8cbad9 !important}
-.w3-hover-border-theme:hover {border-color:#8cbad9 !important}
+.w3-text-theme-blue-light {color:#87b2f8 !important}
+.w3-text-theme-blue {color:#0e65f1 !important}
+.w3-text-theme-blue-dark {color:#073378 !important}
+
+.w3-text-theme-red-light {color:#f3948c !important}
+.w3-text-theme-red {color:#e72918 !important}
+.w3-text-theme-red-dark {color:#73150c !important}
+
+.w3-text-theme-green-light {color:#9de1af !important}
+.w3-text-theme-green {color:#3cc360 !important}
+.w3-text-theme-green-dark {color:#1e6230 !important}
+
+.w3-text-theme-yellow-light {color:#fdde81 !important}
+.w3-text-theme-yellow {color:#fbbc05 !important}
+.w3-text-theme-yellow-dark {color:#7e5f02 !important}
 
 .i{color:#000 !important}
 .a{color:#2d6286 !important; font-size: 16pt}
 .li {font-family: "Roboto", sans-serif; font-size: 18pt !important; color:#8cbad9}
-.w3-theme-canvas{background-color:#fff !important; padding-top: 16pt; padding-bottom: 16pt}
