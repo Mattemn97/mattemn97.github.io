@@ -4,7 +4,7 @@ function Vehicle(x, y) {
     this.vel = p5.Vector.random2D();
     this.acc = createVector();
     this.r = 8;
-    this.maxspeed = 15;
+    this.maxspeed = 12.5;
     this.maxforce = 1;
     this.visible = true;
 }
@@ -37,7 +37,7 @@ Vehicle.prototype.update = function () {
 
 Vehicle.prototype.show = function () {
     if (this.visible) {
-        stroke('#c6ddec');
+        stroke(255);
         strokeWeight(this.r);
         point(this.pos.x, this.pos.y);
     }

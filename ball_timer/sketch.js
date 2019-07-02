@@ -7,7 +7,7 @@ function preload() {
 
 function setup() {
     createCanvas(1000, 300);
-    background('#265473');
+    background(50);
     setInterval(secondDraw, 1000);
     prima = true;
 }
@@ -27,6 +27,7 @@ function draw() {
         console.log("Prima");
         console.log("Lunghezza vehicles:" + vehicles.length);
     }
+    background(50);
     for (var i = 0; i < vehicles.length; i++) {
         var v = vehicles[i];
         v.behaviors();
