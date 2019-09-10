@@ -7,38 +7,31 @@ h3 {font-family: "Roboto", sans-serif; font-size: 20pt !important; color : #000}
 h2 {font-family: "Roboto", sans-serif; font-size: 24pt !important; color : #000}
 h1 {font-family: "Roboto", sans-serif; font-size: 30pt !important; color : #000}
 
-.w3-theme-back-blue-light {background-color:#87b2f8 !important}
-.w3-theme-back-blue {background-color:#0e65f1 !important}
-.w3-theme-back-blue-dark {background-color:#073378 !important}
+li {font-family: "Roboto", sans-serif; font-size: 12pt !important; color:#ffcc33}
+a{color:#66ff33 !important; font-size: 16pt}
 
-.w3-theme-back-red-light {background-color:#f3948c !important}
-.w3-theme-back-red {background-color:#e72918 !important}
-.w3-theme-back-red-dark {background-color:#73150c !important}
+.w3-theme-back-purple-light {background-color:#e699ff !important}
+.w3-theme-back-purple {background-color:#cc33ff !important}
+.w3-theme-back-purple-dark {background-color:#9900cc !important}
 
-.w3-theme-back-green-light {background-color:#9de1af !important}
-.w3-theme-back-green {background-color:#3cc360 !important}
-.w3-theme-back-green-dark {background-color:#1e6230 !important}
+.w3-theme-back-yellow-light {background-color:#ffe699 !important}
+.w3-theme-back-yellow {background-color:#ffcc33 !important}
+.w3-theme-back-yellow-dark {background-color:#cc9900 !important}
 
-.w3-theme-back-yellow-light {background-color:#fdde81 !important}
-.w3-theme-back-yellow {background-color:#fbbc05 !important}
-.w3-theme-back-yellow-dark {background-color:#7e5f02 !important}
+.w3-theme-back-cyan-light {background-color:#99ccff !important}
+.w3-theme-back-cyan {background-color:#3399ff !important}
+.w3-theme-back-cyan-dark {background-color:#0066cc !important}
 
-.w3-text-theme-blue-light {color:#87b2f8 !important}
-.w3-text-theme-blue {color:#0e65f1 !important}
-.w3-text-theme-blue-dark {color:#073378 !important}
+.w3-theme-text-purple-light {color:#e699ff !important}
+.w3-theme-text-purple {color:#cc33ff !important}
+.w3-theme-text-purple-dark {color:#9900cc !important}
 
-.w3-text-theme-red-light {color:#f3948c !important}
-.w3-text-theme-red {color:#e72918 !important}
-.w3-text-theme-red-dark {color:#73150c !important}
+.w3-theme-text-yellow-light {color:#ffe699 !important}
+.w3-theme-text-yellow {color:#ffcc33 !important}
+.w3-theme-text-yellow-dark {color:#cc9900 !important}
 
-.w3-text-theme-green-light {color:#9de1af !important}
-.w3-text-theme-green {color:#3cc360 !important}
-.w3-text-theme-green-dark {color:#1e6230 !important}
-
-.w3-text-theme-yellow-light {color:#fdde81 !important}
-.w3-text-theme-yellow {color:#fbbc05 !important}
-.w3-text-theme-yellow-dark {color:#7e5f02 !important}
+.w3-theme-text-cyan-light {color:#99ccff !important}
+.w3-theme-text-cyan {color:#3399ff !important}
+.w3-theme-text-cyan-dark {color:#0066cc !important}
 
 .i{color:#000 !important}
-.a{color:#2d6286 !important; font-size: 16pt}
-.li {font-family: "Roboto", sans-serif; font-size: 18pt !important; color:#8cbad9}
