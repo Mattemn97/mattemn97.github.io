@@ -1,32 +1,28 @@
-var font;
 var vehicles = [];
+var images = [];
 
+let img;
 function preload() {
-    font = loadFont('DS-DIGI.TTF');
+  img = loadImage('assets/laDefense.jpg');
 }
 
 function setup() {
     createCanvas(1000, 300);
     background('#265473');
+    image(img, 10, 10, 50, 50);
     setInterval(secondDraw, 1000);
-    prima = true;
 }
 
 function draw() {
-    if (prima) {
-        var time = gettime();
-        var points = font.textToPoints(time, 100, 200, 192, {
-            sampleFactor: 0.25
-        });
-        for (var i = 0; i < points.length; i++) {
-            var pt = points[i];
-            var vehicle = new Vehicle(pt.x, pt.y);
-            vehicles.push(vehicle);
-        }
-        prima = false;
-        console.log("Prima");
-        console.log("Lunghezza vehicles:" + vehicles.length);
+    var points 
+    for (var i = 0; i < points.length; i++) {
+        var pt = points[i];
+        var vehicle = new Vehicle(pt.x, pt.y);
+        vehicles.push(vehicle);
     }
+    prima = false;
+    console.log("Prima");
+    console.log("Lunghezza vehicles:" + vehicles.length);
     background('#265473');
     for (var i = 0; i < vehicles.length; i++) {
         var v = vehicles[i];
