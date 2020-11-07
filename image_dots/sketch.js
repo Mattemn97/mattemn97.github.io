@@ -1,66 +1,58 @@
-var font;
 var vehicles = [];
+var images = [];
+var imgData;
+var colPixel = [];
+var listPixel = [];
 
-function preload() {
-    font = loadFont('DS-DIGI.TTF');
+onload = init;
+
+function init() {
+    cv = document.querySelector("#cv");
+    c = cv.getContext("2d");
+    
+    pre = document.querySelector("pre")
+
+    img1 = new Image();
+    img1.crossOrigin = "Anonymous";
+    
+    img1.onload = function() {
+        c.drawImage(img1, 0,0,64,64);
+        var idata = c.getImageData(0, 0, 64, 64);
+        getPixels(idata);
+    };
+    
+    img1.src = 'https://mattemn97.github.io/images/Profilo.jpg';
+    
+}   
+
+function getPixels(imgData) {
+    for (var k = 0; k < imgData.data.length; k += 4) {
+        colPixel = [imgData.data[k], imgData.data[k+1], imgData.data[k+2]]
+        listPixel.push(colPixel);
+    }   
 }
 
 function setup() {
-    createCanvas(1000, 300);
+    createCanvas(700, 700);
     background('#265473');
-    setInterval(secondDraw, 1000);
-    prima = true;
+    
 }
 
 function draw() {
-    if (prima) {
-        var time = gettime();
-        var points = font.textToPoints(time, 100, 200, 192, {
-            sampleFactor: 0.25
-        });
-        for (var i = 0; i < points.length; i++) {
-            var pt = points[i];
-            var vehicle = new Vehicle(pt.x, pt.y);
-            vehicles.push(vehicle);
-        }
-        prima = false;
-        console.log("Prima");
-        console.log("Lunghezza vehicles:" + vehicles.length);
+    for (var i = 0; i < listPixel.length; i++) {
+        var x;
+        var y;
+        x = (i % 64) * 10;
+        y = Math.floor(i/64) * 10;
+        var vehicle = new Vehicle(x, y);
+        vehicles.push(vehicle);
+        console.log("Lunghezza vehicles SETUP:" + vehicles.length);
     }
-    background('#265473');
+    console.log("Lunghezza vehicles DRAW:" + vehicles.length);
     for (var i = 0; i < vehicles.length; i++) {
         var v = vehicles[i];
         v.behaviors();
         v.update();
-        v.show();
+        v.show(listPixel[i][0], listPixel[i][1], listPixel[i][2]);
     }
-}
-
-function secondDraw() {
-    var time = gettime();
-    var points = font.textToPoints(time, 100, 200, 192, {
-        sampleFactor: 0.25
-    });
-
-    if (points.length <= vehicles.length) {
-        for (var k = 0; k < points.length; k++) {
-            vehicles[k].visible = true;
-            var new_pt1 = createVector(points[k].x, points[k].y);
-            vehicles[k].changeTarget(new_pt1.x, new_pt1.y);
-        }
-        for (var j = points.length; j < vehicles.length; j++) {
-            vehicles[j].visible = false;
-        }
-    } else {
-        for (var i = vehicles.length; i < points.length; i++) {
-            vehicles.pop();
-        }
-
-        for (var i = vehicles.length; i < points.length; i++) {
-            var pt = points[i];
-            var vehicle = new Vehicle(pt.x, pt.y);
-            vehicles.push(vehicle);
-        }
-    }
-    console.log("Cambio di tempo: " + time);
 }
