@@ -3,8 +3,8 @@ var images = [];
 var imgData;
 var colPixel = [];
 var listPixel = [];
-var lar = 64;
-var alt = 64;
+
+var prima = true;
 
 onload = init;
 
@@ -18,8 +18,8 @@ function init() {
     img1.crossOrigin = "Anonymous";
     
     img1.onload = function() {
-        c.drawImage(img1, 0,0,lar,alt);
-        var idata = c.getImageData(0, 0, lar, alt);
+        c.drawImage(img1, 0,0,64,64);
+        var idata = c.getImageData(0, 0, 64, 64);
         getPixels(idata);
     };
     
@@ -35,7 +35,7 @@ function getPixels(imgData) {
 }
 
 function setup() {
-    createCanvas(alt * 10, lar * 10);
+    createCanvas(700, 700);
     background('#265473');
     
 }
@@ -44,21 +44,17 @@ function draw() {
     for (var i = 0; i < listPixel.length; i++) {
         var x;
         var y;
-        x = (i % alt) * 10;
-        y = Math.floor(i/lar) * 10;
+        x = (i % 64) * 10;
+        y = Math.floor(i/64) * 10;
         var vehicle = new Vehicle(x, y);
         vehicles.push(vehicle);
-        console.log("Lunghezza vehicles SETUP:" + vehicles.length);
     }
-
-    for (var i = 0; i < (alt * lar); i++) {
-        console.log("Lunghezza vehicles DRAW:" + i);
+    background('#265473');
+    
+    for (var i = 0; i < listPixel.length; i++) {
         var v = vehicles[i];
         v.behaviors();
         v.update();
-        var red = listPixel[i][0];
-        var green = listPixel[i][1];
-        var blue = listPixel[i][2];
-        v.show(red, green, blue);
+        v.show(listPixel[i][0], listPixel[i][1], listPixel[i][2]);
     }
 }
