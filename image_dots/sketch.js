@@ -36,7 +36,7 @@ function getPixels(imgData) {
 
 function setup() {
     createCanvas(700, 700);
-    background('#265473');
+    background('#FFFFFF');
     
 }
 
@@ -49,7 +49,7 @@ function draw() {
         var vehicle = new Vehicle(x, y);
         vehicles.push(vehicle);
     }
-    background('#265473');
+    background('#FFFFFF');
     
     for (var i = 0; i < listPixel.length; i++) {
         var v = vehicles[i];
