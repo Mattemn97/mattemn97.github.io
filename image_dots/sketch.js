@@ -56,6 +56,9 @@ function draw() {
         var v = vehicles[i];
         v.behaviors();
         v.update();
-        v.show(listPixel[i][0], listPixel[i][1], listPixel[i][2]);
+        var red = listPixel[i][0];
+        var green = listPixel[i][1];
+        var blue = listPixel[i][2];
+        v.show(red, green, blue);
     }
 }
