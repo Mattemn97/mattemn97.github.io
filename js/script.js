@@ -1,5 +1,5 @@
 $.ajax({
-    url: 'csv_data.csv',
+    url: 'https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-regioni/dpc-covid19-ita-regioni.csv',
     dataType: 'text',
   }).done(successFunction);
   
