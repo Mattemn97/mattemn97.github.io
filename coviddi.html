@@ -1,26 +1,40 @@
 <!DOCTYPE html>
-<html>
-<title>Coviddi</title>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<link rel="stylesheet" href="css/style.css">
-<link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto'>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-  
-<script language="javascript" type="text/javascript" src="js/script.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script src="https://raw.githubusercontent.com/ElijahFowler/CSVtoTable/master/js/jquery.csvToTable.js"></script>
-<script src="https://raw.githubusercontent.com/ElijahFowler/CSVtoTable/master/js/jquery.tablesorter.min.js"></script>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <style>
+            table {
+                border-collapse: collapse;
+                border: 2px black solid;
+                font: 12px sans-serif;
+            }
 
-<body class="w3-theme-third-back">
-<div id="CSVTable"></div>
+            td {
+                border: 1px black solid;
+                padding: 5px;
+            }
+        </style>
+    </head>
+    <body>
+        <!-- <script src="http://d3js.org/d3.v3.min.js"></script> -->
+        <script src="d3.min.js?v=3.2.8"></script>
 
-<script>
-$(function() {
-  $('#CSVTable').CSVToTable('https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-regioni/dpc-covid19-ita-regioni.csv');
-});
-</script>
-</body>
+        <script type="text/javascript"charset="utf-8">
+            d3.text("data.csv", function(data) {
+                var parsedCSV = d3.csv.parseRows(data);
+
+                var container = d3.select("body")
+                    .append("table")
+
+                    .selectAll("tr")
+                        .data(parsedCSV).enter()
+                        .append("tr")
+
+                    .selectAll("td")
+                        .data(function(d) { return d; }).enter()
+                        .append("td")
+                        .text(function(d) { return d; });
+            });
+        </script>
+    </body>
 </html>
