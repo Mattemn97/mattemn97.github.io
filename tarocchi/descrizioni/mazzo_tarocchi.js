@@ -242,5 +242,3 @@ export const carteTarocchi = [
     BreveDescrizione: "Simbolo di completamento e perfezione."
   }
 ];
-
-export default carteTarocchi;
