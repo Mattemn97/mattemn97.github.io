@@ -1,6 +1,9 @@
-async function metodoCelticaSemplice(mazzoFile) {
-    const mazzo = await caricaJson(mazzoFile);
-    const carteEstratte = pescaTotCarte(mazzo, 8);
+import { pescaCarte } from "https://mattemn97.github.io/tarocchi/descrizioni/descrizione_stese.js";
+
+function metodoCelticaSemplice() {
+    const carteEstratte = pescaCarte(8);
+    console.log(carteEstratte);
+    
     const risultati = [
       `Influenze passate:\n${stampaCarta(carteEstratte[0], true)}`,
       `Influenze attuali:\n${stampaCarta(carteEstratte[1], true)}`,
@@ -13,12 +16,5 @@ async function metodoCelticaSemplice(mazzoFile) {
     ];
     return risultati.join("\n\n");
   }
-  
-  async function caricaJson(filePath) {
-    const response = await fetch(filePath);
-    if (!response.ok) {
-      throw new Error(`Errore nel caricamento del file: ${filePath}`);
-    }
-    return response.json();
-  }
+
   
