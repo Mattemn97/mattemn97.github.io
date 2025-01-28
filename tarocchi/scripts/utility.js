@@ -1,5 +1,5 @@
 // Importa il mazzo dal file 'mazzo_tarocchi.js'
-const { mazzo_tarocchi } = require('https://mattemn97.github.io/tarocchi/descrizioni/mazzo_tarocchi.js');
+import { mazzo_tarocchi } from "https://mattemn97.github.io/tarocchi/descrizioni/mazzo_tarocchi.js";
 
 /**
  * Funzione per pescare carte casuali dal mazzo dei tarocchi.
