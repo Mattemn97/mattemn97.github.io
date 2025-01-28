@@ -6,7 +6,7 @@ const { mazzo_tarocchi } = require('https://mattemn97.github.io/tarocchi/descriz
  * @param {number} numCarte - Numero di carte da pescare.
  * @returns {Array} Lista di carte pescate con significato casuale.
  */
-function pescaCarte(numCarte) {
+export function pescaCarte(numCarte) {
     // Controlla che il numero di carte richiesto sia valido
     if (numCarte <= 0 || numCarte > mazzo_tarocchi.length) {
         throw new Error('Il numero di carte deve essere compreso tra 1 e il numero totale di carte nel mazzo.');

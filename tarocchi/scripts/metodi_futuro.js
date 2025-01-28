@@ -1,6 +1,6 @@
 import { pescaCarte } from "https://mattemn97.github.io/tarocchi/scripts/utility.js";
 
-function metodoCelticaSemplice() {
+export function metodoCelticaSemplice() {
     const carteEstratte = pescaCarte(8);
     console.log(carteEstratte);
     
