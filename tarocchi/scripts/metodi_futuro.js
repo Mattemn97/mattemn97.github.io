@@ -1,4 +1,4 @@
-import { pescaCarte } from "https://mattemn97.github.io/tarocchi/descrizioni/descrizione_stese.js";
+import { pescaCarte } from "https://mattemn97.github.io/tarocchi/scripts/utility.js";
 
 function metodoCelticaSemplice() {
     const carteEstratte = pescaCarte(8);

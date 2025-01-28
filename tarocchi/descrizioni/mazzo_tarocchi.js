@@ -1,4 +1,4 @@
-const carteTarocchi = [
+export const carteTarocchi = [
   {
     Titolo: "Il Matto",
     Numerologia: "0",

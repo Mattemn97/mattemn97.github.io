@@ -10,6 +10,8 @@ const metodiMapping = {
     "descrizione_metodi_futuro.js": "https://mattemn97.github.io/tarocchi/descrizioni/descrizione_metodi_futuro.js",
 };
 
+import { metodoCelticaSemplice } from "https://mattemn97.github.io/tarocchi/scripts/metodi_futuro.js";
+
 document.addEventListener("DOMContentLoaded", () => {
     const dropdownStese = document.getElementById("dropdownStese");
     const dropdownMetodi = document.getElementById("dropdownMetodi");
@@ -61,6 +63,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Evento per eseguire il metodo selezionato
     submitButton.addEventListener("click", () => {
         const selectedFunction = dropdownMetodi.value;
+        console.log(selectedFunction);
         if (selectedFunction) {
             eval(selectedFunction); // Esegue la funzione selezionata
         }
