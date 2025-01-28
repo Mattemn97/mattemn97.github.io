@@ -1,5 +1,5 @@
 // Importa i dati del file descrizione_stese.js
-import { descrizioneStese } from "./descrizione_stese.js";
+import { descrizioneStese } from "https://mattemn97.github.io/tarocchi/descrizioni/descrizione_stese.js";
 
 // Mappa che associa il nome del file a un import dinamico
 const metodiMapping = {
