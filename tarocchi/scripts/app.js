@@ -3,11 +3,11 @@ import { descrizioneStese } from "./descrizione_stese.js";
 
 // Mappa che associa il nome del file a un import dinamico
 const metodiMapping = {
-    "descrizione_metodi_giornaliere.js": "./descrizione_metodi_giornaliere.js",
-    "descrizione_metodi_settimanale.js": "./descrizione_metodi_settimanale.js",
-    "descrizione_metodi_mensile.js": "./descrizione_metodi_mensile.js",
-    "descrizione_metodi_annuale.js": "./descrizione_metodi_annuale.js",
-    "descrizione_metodi_futuro.js": "./descrizione_metodi_futuro.js",
+    "descrizione_metodi_giornaliere.js": "https://mattemn97.github.io/tarocchi/descrizioni/descrizione_metodi_giornaliere.js",
+    "descrizione_metodi_settimanale.js": "https://mattemn97.github.io/tarocchi/descrizioni/descrizione_metodi_settimanale.js",
+    "descrizione_metodi_mensile.js": "https://mattemn97.github.io/tarocchi/descrizioni/descrizione_metodi_mensile.js",
+    "descrizione_metodi_annuale.js": "https://mattemn97.github.io/tarocchi/descrizioni/descrizione_metodi_annuale.js",
+    "descrizione_metodi_futuro.js": "https://mattemn97.github.io/tarocchi/descrizioni/descrizione_metodi_futuro.js",
 };
 
 document.addEventListener("DOMContentLoaded", () => {
