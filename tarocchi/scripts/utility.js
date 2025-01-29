@@ -42,7 +42,7 @@ export function visualizzaRisultati(risultati) {
             lettura_estrazioneDiv.style.opacity = "0";
 
             const cartaDiv = document.createElement("div");
-            cartaDiv.innerHTML = risultati.Carta.Titolo;
+            cartaDiv.innerHTML = risultati.Carta.Titolo + ' - ' + risultati.Carta.Significato;
             cartaDiv.classList.add("carta");
             cartaDiv.style.opacity = "0";
 
