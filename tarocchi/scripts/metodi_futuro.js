@@ -38,16 +38,37 @@ export function metodoCelticaSemplice() {
 export function metodoCelticaCompleta() {
     const carteEstratte = pescaCarte(10);
     const risultati = [
-        `Cio' che sta accadendo    -->    ${carteEstratte[0].Titolo}`,
-        `Influenze esterne    -->    ${carteEstratte[1].Titolo}`,
-        `Riflessioni    -->    ${carteEstratte[2].Titolo}`,
-        `Sentimenti    -->    ${carteEstratte[3].Titolo}`,
-        `La vera causa    -->    ${carteEstratte[4].Titolo}`,
-        `Sviluppo situazione    -->    ${carteEstratte[5].Titolo}`,
-        `Cio' che si vuole ottenere    -->    ${carteEstratte[6].Titolo}`,
-        `Il punto di vista degli altri    -->    ${carteEstratte[7].Titolo}`,
-        `Speranze o paure    -->    ${carteEstratte[8].Titolo}`,
-        `Risultato nel lontano futuro    -->    ${carteEstratte[9].Titolo}`
+      {
+        LetturaEstrazione: "Cio' che sta accadendo",
+        Carta: carteEstratte[0]
+      },{
+        LetturaEstrazione: "Influenze esterne",
+        Carta: carteEstratte[1]
+      },{
+        LetturaEstrazione: "Riflessioni",
+        Carta: carteEstratte[2]
+      },{
+        LetturaEstrazione: "Sentimenti",
+        Carta: carteEstratte[3]
+      },{
+        LetturaEstrazione: "La vera causa",
+        Carta: carteEstratte[4]
+      },{
+        LetturaEstrazione: "Sviluppo situazione",
+        Carta: carteEstratte[5]
+      },{
+        LetturaEstrazione: "Cio' che si vuole ottenere",
+        Carta: carteEstratte[6]
+      },{
+        LetturaEstrazione: "Il punto di vista degli altri",
+        Carta: carteEstratte[7]
+      },{
+        LetturaEstrazione: "Speranze o paure",
+        Carta: carteEstratte[8]
+      },{
+        LetturaEstrazione: "Risultato nel lontano futuro",
+        Carta: carteEstratte[9]
+      }
     ];
   
     visualizzaRisultati(risultati);
