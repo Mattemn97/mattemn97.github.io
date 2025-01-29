@@ -10,7 +10,6 @@ body {
 /* Contenitore principale */
 #selettore {
     font-size: 20px;
-    max-width: 1200px;
     margin: auto;
     padding: 20px;
     background-color: #ffffff; /* Bianco per contrasto */
@@ -21,7 +20,6 @@ body {
 
 #carte_estratte {
     font-size: 20px;
-    max-width: 1200px;
     margin: auto;
     padding: 20px;
     background-color: #ffffff; /* Bianco per contrasto */
