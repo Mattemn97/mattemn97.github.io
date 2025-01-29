@@ -11,6 +11,8 @@ const metodiMapping = {
 };
 
 import { metodoCelticaSemplice } from "./metodi_futuro.js";
+import { metodoCelticaCompleta } from "./metodi_futuro.js";
+import { metodoCartaSingola } from "./metodi_futuro.js";
 
 document.addEventListener("DOMContentLoaded", () => {
     const dropdownStese = document.getElementById("dropdownStese");
