@@ -4,14 +4,31 @@ import { visualizzaRisultati } from "./utility.js";
 export function metodoCelticaSemplice() {
     const carteEstratte = pescaCarte(8);
     const risultati = [
-        `Influenze passate    -->    ${carteEstratte[0].Titolo}`,
-        `Influenze attuali    -->    ${carteEstratte[1].Titolo}`,
-        `Influenze future    -->    ${carteEstratte[2].Titolo}`,
-        `Influenze esterne    -->    ${carteEstratte[3].Titolo}`,
-        `Influenze interne    -->    ${carteEstratte[4].Titolo}`,
-        `Fondo mazzo 1    -->    ${carteEstratte[5].Titolo}`,
-        `Fondo mazzo 2    -->    ${carteEstratte[6].Titolo}`,
-        `Fondo mazzo 3    -->    ${carteEstratte[7].Titolo}`
+      {
+        LetturaEstrazione: "Influenze passate",
+        Carta: carteEstratte[0]
+      },{
+        LetturaEstrazione: "Influenze attuali",
+        Carta: carteEstratte[1]
+      },{
+        LetturaEstrazione: "Influenze future",
+        Carta: carteEstratte[2]
+      },{
+        LetturaEstrazione: "Influenze esterne",
+        Carta: carteEstratte[3]
+      },{
+        LetturaEstrazione: "Influenze interne",
+        Carta: carteEstratte[4]
+      },{
+        LetturaEstrazione: "Fondo mazzo 1",
+        Carta: carteEstratte[5]
+      },{
+        LetturaEstrazione: "Fondo mazzo 2",
+        Carta: carteEstratte[6]
+      },{
+        LetturaEstrazione: "Fondo mazzo 3",
+        Carta: carteEstratte[7]
+      }
     ];
 
     visualizzaRisultati(risultati);
@@ -40,8 +57,8 @@ export function metodoCartaSingola() {
     const carteEstratte = pescaCarte(1);
     const risultati = [
         {
-            LetturaEstrazione: "Carta estratta",
-            Carta: carteEstratte[0]
+          LetturaEstrazione: "Carta estratta",
+          Carta: carteEstratte[0]
         }
     ];
 
