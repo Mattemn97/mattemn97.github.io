@@ -18,6 +18,35 @@ body {
     border: 3px solid #3498db; /* Blu standard */
 }
 
+.risultati {
+    font-size: 18px;
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+    background-color: #ffffff; /* Bianco per contrasto */
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+    border: 3px solid #3498db; /* Blu standard */
+    
+}
+
+.lettura_estrazione {
+    color: #e74c3c !important;  /* Rosso standard */
+    display: block !important;
+    margin-bottom: 5px !important;
+    font-weight: bold !important;
+}
+
+.carta {
+    background-color: #f9e79f; /* Giallo chiaro */
+    color: #2b2b2b; /* Testo scuro */
+    border: 2px solid #28b463; /* Verde brillante */
+    padding: 8px;
+    border-radius: 4px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
 /* Titoli */
 h1 {
     color: #2980b9; /* Blu scuro */
@@ -26,7 +55,7 @@ h1 {
 
 /* Etichette */
 label {
-    color: #e74c3c; /* Rosso standard */
+    color: #e74c3c;  /* Rosso standard */
     display: block;
     margin-bottom: 5px;
     font-weight: bold;
@@ -85,11 +114,4 @@ label {
     margin: 20px 0;
 }
 
-.carta {
-    font-size: 18px;
-    background-color: white;
-    padding: 10px;
-    margin: 5px 0;
-    border-radius: 5px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-}
+
