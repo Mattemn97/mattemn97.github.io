@@ -1,5 +1,5 @@
 // Importa il mazzo dal file 'mazzo_tarocchi.js'
-import { mazzo_tarocchi } from "https://mattemn97.github.io/tarocchi/descrizioni/mazzo_tarocchi.js";
+import { carteTarocchi } from "./descrizioni/mazzo_tarocchi.js";
 
 /**
  * Funzione per pescare carte casuali dal mazzo dei tarocchi.
@@ -8,12 +8,12 @@ import { mazzo_tarocchi } from "https://mattemn97.github.io/tarocchi/descrizioni
  */
 export function pescaCarte(numCarte) {
     // Controlla che il numero di carte richiesto sia valido
-    if (numCarte <= 0 || numCarte > mazzo_tarocchi.length) {
+    if (numCarte <= 0 || numCarte > carteTarocchi.length) {
         throw new Error('Il numero di carte deve essere compreso tra 1 e il numero totale di carte nel mazzo.');
     }
 
     // Mescola il mazzo e pesca le carte
-    const mazzoMescolato = [...mazzo_tarocchi].sort(() => Math.random() - 0.5);
+    const mazzoMescolato = [...carteTarocchi].sort(() => Math.random() - 0.5);
     const cartePescate = mazzoMescolato.slice(0, numCarte);
 
     // Aggiungi un significato casuale (Significato o SignificatoInverso) a ogni carta pescata

@@ -1,20 +1,40 @@
-import { pescaCarte } from "https://mattemn97.github.io/tarocchi/scripts/utility.js";
+import { pescaCarte } from "./utility.js";
 
 export function metodoCelticaSemplice() {
     const carteEstratte = pescaCarte(8);
-    console.log(carteEstratte);
-    
     const risultati = [
-      `Influenze passate:\n${stampaCarta(carteEstratte[0], true)}`,
-      `Influenze attuali:\n${stampaCarta(carteEstratte[1], true)}`,
-      `Influenze future:\n${stampaCarta(carteEstratte[2], true)}`,
-      `Influenze esterne:\n${stampaCarta(carteEstratte[3], true)}`,
-      `Influenze interne:\n${stampaCarta(carteEstratte[4], true)}`,
-      `Fondo mazzo 1:\n${stampaCarta(carteEstratte[5], true)}`,
-      `Fondo mazzo 2:\n${stampaCarta(carteEstratte[6], true)}`,
-      `Fondo mazzo 3:\n${stampaCarta(carteEstratte[7], true)}`
+        `Influenze passate-->    ${carteEstratte[0].Titolo}`,
+        `Influenze attuali-->    ${carteEstratte[1].Titolo}`,
+        `Influenze future-->    ${carteEstratte[2].Titolo}`,
+        `Influenze esterne-->    ${carteEstratte[3].Titolo}`,
+        `Influenze interne-->    ${carteEstratte[4].Titolo}`,
+        `Fondo mazzo 1-->    ${carteEstratte[5].Titolo}`,
+        `Fondo mazzo 2-->    ${carteEstratte[6].Titolo}`,
+        `Fondo mazzo 3-->    ${carteEstratte[7].Titolo}`
     ];
-    return risultati.join("\n\n");
-  }
 
-  
+    const risultatiDiv = document.getElementById("risultati");
+    risultatiDiv.innerHTML = ""; // Pulisce eventuali risultati precedenti
+
+    // Aggiungi la scritta "Risultati" sopra le carte
+    const titolo = document.createElement("h2");
+    titolo.textContent = "Risultati";
+    risultatiDiv.appendChild(titolo);
+
+    // Mostra le carte una alla volta con un effetto graduale
+    risultati.forEach((risultato, index) => {
+        setTimeout(() => {
+            const cartaDiv = document.createElement("div");
+            cartaDiv.innerHTML = risultato;
+            cartaDiv.classList.add("carta");
+            cartaDiv.style.opacity = "0"; // Inizialmente invisibile
+            risultatiDiv.appendChild(cartaDiv);
+
+            // Effetto fade-in graduale per la carta
+            setTimeout(() => {
+                cartaDiv.style.transition = "opacity 1s";
+                cartaDiv.style.opacity = "1";
+            }, 50);
+        }, index * 1000); // Ogni carta compare dopo 1 secondo dalla precedente
+    });
+}
