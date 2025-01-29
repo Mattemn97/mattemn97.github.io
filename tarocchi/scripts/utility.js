@@ -25,9 +25,9 @@ export function pescaCarte(numCarte) {
 }
 
 export function visualizzaRisultati(risultati) {
-    const risultatiDiv = document.getElementById("risultati");
-    risultatiDiv.innerHTML = "";    
-    risultatiDiv.classList.add("risultati");
+    const risultatiDiv = document.getElementById("carte_estratte");
+    risultatiDiv.innerHTML = "";
+    risultatiDiv.style.opacity = "1";
 
 
     const titolo = document.createElement("h1");
@@ -42,10 +42,32 @@ export function visualizzaRisultati(risultati) {
             lettura_estrazioneDiv.style.opacity = "0";
 
             const cartaDiv = document.createElement("div");
-            cartaDiv.innerHTML = risultati.Carta.Titolo + ' - ' + risultati.Carta.Significato;
             cartaDiv.classList.add("carta");
             cartaDiv.style.opacity = "0";
 
+            const primaRigaCarta_div = document.createElement("div");
+            primaRigaCarta_div.classList.add("w3-card");
+
+            const titoloCarta_div = document.createElement("div");
+            titoloCarta_div.classList.add("titolo_carta");
+            titoloCarta_div.classList.add("w3-threequarter");
+            titoloCarta_div.innerHTML = risultati.Carta.Titolo;
+
+            const numerologiaCarta_div = document.createElement("div");
+            numerologiaCarta_div.classList.add("numerologia_carta");
+            numerologiaCarta_div.classList.add("w3-quarter");
+            numerologiaCarta_div.innerHTML = risultati.Carta.Numerologia;
+
+            primaRigaCarta_div.appendChild(titoloCarta_div);
+            primaRigaCarta_div.appendChild(numerologiaCarta_div);
+
+            const significatoCarta_div = document.createElement("div");
+            significatoCarta_div.classList.add("significato_carta");
+            significatoCarta_div.innerHTML = risultati.Carta.Significato;
+            
+            cartaDiv.appendChild(primaRigaCarta_div);
+            cartaDiv.appendChild(significatoCarta_div);
+            
             risultatiDiv.appendChild(lettura_estrazioneDiv);
             risultatiDiv.appendChild(cartaDiv);
 

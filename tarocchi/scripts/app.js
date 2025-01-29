@@ -65,7 +65,6 @@ document.addEventListener("DOMContentLoaded", () => {
     // Evento per eseguire il metodo selezionato
     submitButton.addEventListener("click", () => {
         const selectedFunction = dropdownMetodi.value;
-        console.log(selectedFunction);
         if (selectedFunction) {
             eval(selectedFunction); // Esegue la funzione selezionata
         }

@@ -8,8 +8,9 @@ body {
 }
 
 /* Contenitore principale */
-#container {
-    max-width: 600px;
+#selettore {
+    font-size: 20px;
+    max-width: 66%;
     margin: auto;
     padding: 20px;
     background-color: #ffffff; /* Bianco per contrasto */
@@ -18,9 +19,9 @@ body {
     border: 3px solid #3498db; /* Blu standard */
 }
 
-.risultati {
-    font-size: 18px;
-    max-width: 600px;
+#carte_estratte {
+    font-size: 20px;
+    max-width: 66%;
     margin: auto;
     padding: 20px;
     background-color: #ffffff; /* Bianco per contrasto */
@@ -31,9 +32,10 @@ body {
 }
 
 .lettura_estrazione {
+    font-size: 20px !important;
     color: #e74c3c !important;  /* Rosso standard */
     display: block !important;
-    margin-bottom: 5px !important;
+    margin-top: 10px !important;
     font-weight: bold !important;
 }
 
@@ -47,6 +49,24 @@ body {
     box-sizing: border-box;
 }
 
+.titolo_carta{
+    color: #2980b9; /* Blu scuro */
+    text-align: left;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.significato_carta{
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.numerologia_carta{
+    text-align: right;
+    font-weight: bold;
+}
+
+
 /* Titoli */
 h1 {
     color: #2980b9; /* Blu scuro */
@@ -55,6 +75,7 @@ h1 {
 
 /* Etichette */
 label {
+    font-size: 16pt !important;
     color: #e74c3c;  /* Rosso standard */
     display: block;
     margin-bottom: 5px;
