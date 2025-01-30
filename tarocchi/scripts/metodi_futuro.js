@@ -74,6 +74,33 @@ export function metodoCelticaCompleta() {
     visualizzaRisultati(risultati);
 }
 
+export function metodoAlchimista() {
+    const carteEstratte = pescaCarte(6);
+    const risultati = [
+      {
+        LetturaEstrazione: "Il passato",
+        Carta: carteEstratte[0]
+      },{
+        LetturaEstrazione: "Il momento presente",
+        Carta: carteEstratte[1]
+      },{
+        LetturaEstrazione: "Il futuro nel suo insieme",
+        Carta: carteEstratte[2]
+      },{
+        LetturaEstrazione: "Futuro prossimo",
+        Carta: carteEstratte[3]
+      },{
+        LetturaEstrazione: "Una catena di eventi",
+        Carta: carteEstratte[4]
+      },{
+        LetturaEstrazione: "Prospettive lontane",
+        Carta: carteEstratte[5]
+      }
+    ];
+  
+    visualizzaRisultati(risultati);
+}
+
 export function metodoCartaSingola() {
     const carteEstratte = pescaCarte(1);
     const risultati = [
