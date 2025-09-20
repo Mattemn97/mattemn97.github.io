@@ -19,6 +19,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const dropdownMetodi = document.getElementById("dropdownMetodi");
     const submitButton = document.getElementById("submitButton");
 
+    // Elementi aggiuntivi per generare e copiare il testo
+    const resultTextarea = document.getElementById("resultTextarea");
+    const copyButton = document.getElementById("copyButton");
+
     // Popola il primo menu a tendina con i dati delle stese
     descrizioneStese.forEach(stesa => {
         const option = document.createElement("option");
@@ -66,7 +70,22 @@ document.addEventListener("DOMContentLoaded", () => {
     submitButton.addEventListener("click", () => {
         const selectedFunction = dropdownMetodi.value;
         if (selectedFunction) {
-            eval(selectedFunction); // Esegue la funzione selezionata
+            // Esegui la funzione selezionata
+            const risultato = eval(selectedFunction); 
+
+            // Genera il testo per ChatGPT
+            const testoPrompt = `Ho appena eseguito una lettura dei tarocchi usando il metodo "${dropdownMetodi.options[dropdownMetodi.selectedIndex].text}". Le carte estratte sono:\n\n${JSON.stringify(risultato, null, 2)}\n\nPuoi darmi una valutazione dettagliata?`;
+
+            resultTextarea.value = testoPrompt;
+            resultTextarea.style.display = "block";
+            copyButton.style.display = "inline-block";
         }
+    });
+
+    // Copia negli appunti il testo generato
+    copyButton.addEventListener("click", () => {
+        resultTextarea.select();
+        document.execCommand("copy");
+        alert("Testo copiato negli appunti!");
     });
 });
