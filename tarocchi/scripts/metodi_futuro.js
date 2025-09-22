@@ -32,6 +32,7 @@ export function metodoCelticaSemplice() {
     ];
 
     visualizzaRisultati(risultati);
+    return risultati;
 }
 
 
@@ -72,6 +73,7 @@ export function metodoCelticaCompleta() {
     ];
   
     visualizzaRisultati(risultati);
+    return risultati;
 }
 
 export function metodoAlchimista() {
@@ -99,6 +101,7 @@ export function metodoAlchimista() {
     ];
   
     visualizzaRisultati(risultati);
+    return risultati;
 }
 
 export function metodoCartaSingola() {
@@ -111,4 +114,5 @@ export function metodoCartaSingola() {
     ];
 
     visualizzaRisultati(risultati);
+    return risultati;
 }

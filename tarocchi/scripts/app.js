@@ -71,14 +71,32 @@ document.addEventListener("DOMContentLoaded", () => {
         const selectedFunction = dropdownMetodi.value;
         if (selectedFunction) {
             // Esegui la funzione selezionata
-            const risultato = eval(selectedFunction); 
+            const risultato = eval(selectedFunction);
+            console.log(risultato);
+
+            // Prepara solo i campi che ti servono
+            let listaCarte = "";
+            if (Array.isArray(risultato)) {
+                // Se risultato è un array di carte
+                listaCarte = risultato.map(item => 
+                    `${item.LetturaEstrazione}: ${item.Carta.Titolo}`
+                ).join("\n");
+            } else if (risultato && risultato.LetturaEstrazione && risultato.Carta) {
+                // Se risultato è un singolo oggetto
+                listaCarte = `${risultato.LetturaEstrazione}: ${risultato.Carta.Titolo}`;
+            }
 
             // Genera il testo per ChatGPT
-            const testoPrompt = `Ho appena eseguito una lettura dei tarocchi usando il metodo "${dropdownMetodi.options[dropdownMetodi.selectedIndex].text}". Le carte estratte sono:\n\n${JSON.stringify(risultato, null, 2)}\n\nPuoi darmi una valutazione dettagliata?`;
+            const testoPrompt = 
+            `Ho appena eseguito una lettura dei tarocchi usando il metodo "${dropdownMetodi.options[dropdownMetodi.selectedIndex].text}". 
+            Le carte estratte sono:
+
+            ${listaCarte}
+
+            Puoi darmi una valutazione dettagliata?`;
 
             resultTextarea.value = testoPrompt;
             resultTextarea.style.display = "block";
-            copyButton.style.display = "inline-block";
         }
     });
 });
