@@ -72,7 +72,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (selectedFunction) {
             // Esegui la funzione selezionata
             const risultato = eval(selectedFunction);
-            console.log(risultato);
+            const domandaUtente = document.getElementById("userQuestion").value.trim();
 
             // Prepara solo i campi che ti servono
             let listaCarte = "";
@@ -88,12 +88,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
             // Genera il testo per ChatGPT
             const testoPrompt = 
-            `Ho appena eseguito una lettura dei tarocchi usando il metodo "${dropdownMetodi.options[dropdownMetodi.selectedIndex].text}". 
-            Le carte estratte sono:
+            `Vorrei che analizzassi questa stesa di tarocchi.
+Il metodo utilizzato è${dropdownMetodi.options[dropdownMetodi.selectedIndex].text.substring(2)}. 
+Le carte estratte sono:
+${listaCarte}
+Il tema/domanda della stesa è: ${domandaUtente}.
 
-            ${listaCarte}
-
-            Puoi darmi una valutazione dettagliata?`;
+Ti chiedo di fornirmi:
+1. Una sintesi generale del messaggio della stesa.
+2. L'interpretazione di ciascuna carta in relazione alla posizione che occupa.
+3. Le connessioni e i contrasti tra le carte.
+4. Un'interpretazione complessiva con eventuale consiglio pratico.`;
 
             resultTextarea.value = testoPrompt;
             resultTextarea.style.display = "block";
