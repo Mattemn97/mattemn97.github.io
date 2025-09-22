@@ -81,11 +81,4 @@ document.addEventListener("DOMContentLoaded", () => {
             copyButton.style.display = "inline-block";
         }
     });
-
-    // Copia negli appunti il testo generato
-    copyButton.addEventListener("click", () => {
-        resultTextarea.select();
-        document.execCommand("copy");
-        alert("Testo copiato negli appunti!");
-    });
 });
