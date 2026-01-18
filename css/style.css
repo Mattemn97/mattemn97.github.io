@@ -1,11 +1,11 @@
 html,body,footer{font-family: "Roboto", sans-serif}
 
-h6 {font-size: 14pt !important; color : #000}
-h5 {font-size: 18pt !important; color : #000}
-h4 {font-size: 20pt !important; color : #000}
-h3 {font-size: 24pt !important; color : #000}
-h2 {font-size: 30pt !important; color : #000}
-h1 {font-size: 36pt !important; color : #000}
+h6 {font-size: 10pt !important; color : #000}
+h5 {font-size: 11pt !important; color : #000}
+h4 {font-size: 12pt !important; color : #000}
+h3 {font-size: 14pt !important; color : #000}
+h2 {font-size: 16pt !important; color : #000}
+h1 {font-size: 20pt !important; color : #000}
 
 .text-first-color {color:#D7E1F5 !important}
 .back-first-color {background-color:#D7E1F5 !important}
@@ -16,8 +16,8 @@ h1 {font-size: 36pt !important; color : #000}
 .text-third-color {color:#7800B4 !important}
 .back-third-color {background-color:#7800B4 !important}
 
-li {font-family: "Roboto", sans-serif; font-size: 14pt !important; color :#000}
-a{color:#000 !important; font-size: 14pt !important}
+li {font-family: "Roboto", sans-serif; font-size: 10pt !important; color :#000}
+a{color:#000 !important; font-size: 10pt !important}
 i{color:#7800B4 }
 
 .w3-sidebar {width: 120px;}
