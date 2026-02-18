@@ -7,6 +7,13 @@ h3 {font-size: 14pt !important; color : #000}
 h2 {font-size: 16pt !important; color : #000}
 h1 {font-size: 20pt !important; color : #000}
 
+/* Riduci interlinea e margini per i titoli */
+h1, h2, h3, h4, h5, h6, li, a {
+    line-height: 1.1;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+
 .text-first-color {color:#D7E1F5 !important}
 .back-first-color {background-color:#D7E1F5 !important}
 
@@ -21,10 +28,25 @@ a{color:#000 !important; font-size: 10pt !important}
 i{color:#7800B4 }
 
 .w3-sidebar {width: 120px;}
-#main {margin-left: 120px}
+#main {margin-left: 120px;}
+
 @media only screen and (max-width: 600px) {#main {margin-left: 0}}
 @media print {
     .no-split {
         page-break-inside: avoid;
     }
+}
+
+/* Larghezza massima equivalente a foglio A4 */
+.a4-container {
+    max-width: 210mm;
+    margin-left: auto;
+    margin-right: auto;
+    box-sizing: border-box;
+}
+
+/* Nessun rientro per elenchi puntati */
+ul, li {
+    padding-left: 0em;
+    margin-left: 0.75em;
 }
