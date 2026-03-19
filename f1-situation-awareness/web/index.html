@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F1 Situation Awareness</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="w3-light-grey">
+
+    <div id="app" class="w3-container">
+
+        <header class="w3-container w3-blue w3-padding-16">
+            <h1>F1 Situation Awareness</h1>
+            <div class="w3-row-padding">
+                <div class="w3-col m4 s12">
+                    <label>Seleziona Anno:</label>
+                    <select v-model="annoSelezionato" class="w3-select">
+                        <option v-for="anno in anniDisponibili" :value="anno">{{ anno }}</option>
+                    </select>
+                </div>
+                <div class="w3-col m4 s12">
+                    <label>Seleziona Gran Premio:</label>
+                    <select v-model="granPremioSelezionato" class="w3-select">
+                        <option v-for="gp in granPremiDisponibili" :value="gp">{{ gp.meeting_name }}</option>
+                    </select>
+                </div>
+            </div>
+        </header>
+
+        <div class="w3-bar w3-black w3-margin-top">
+            <button class="w3-bar-item w3-button tab-link" 
+                    :class="{'w3-blue': schedaAttiva === 'classifiche'}" 
+                    @click="apriScheda('classifiche')">Classifiche Campionato</button>
+            <button class="w3-bar-item w3-button tab-link" 
+                    :class="{'w3-blue': schedaAttiva === 'libere1'}" 
+                    @click="apriScheda('libere1')">Prove Libere 1</button>
+            <button class="w3-bar-item w3-button tab-link" 
+                    :class="{'w3-blue': schedaAttiva === 'libere2'}" 
+                    @click="apriScheda('libere2')">Prove Libere 2</button>
+            <button class="w3-bar-item w3-button tab-link" 
+                    :class="{'w3-blue': schedaAttiva === 'libere3'}" 
+                    @click="apriScheda('libere3')">Prove Libere 3</button>
+            </div>
+
+        <div class="w3-container w3-white w3-padding-16">
+            <div v-if="schedaAttiva === 'classifiche'" class="tab-content w3-animate-opacity">
+                <componente-classifiche :dati-campionato="datiCampionato"></componente-classifiche>
+            </div>
+
+            <div v-if="schedaAttiva === 'libere1'" class="tab-content">
+                <div v-if="sessioneEsistente('libere1')">
+                    <p>Implementazione Prove Libere 1 in arrivo...</p>
+                </div>
+                <div v-else>
+                    <p class="w3-panel w3-pale-yellow w3-border w3-padding">Sessione non presente nel GP selezionato.</p>
+                </div>
+            </div>
+
+            </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/schede/tabella_campionato_costruttori.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
