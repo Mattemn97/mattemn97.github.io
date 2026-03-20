@@ -1,55 +1,247 @@
 // js/main.js
 
-new Vue({
-    el: '#app',
-    data: {
-        annoSelezionato: 2024,
-        anniDisponibili: [],
-        granPremiDisponibili: [],
-        granPremioSelezionato: null,
-        schedaAttiva: 'classifiche' // Scheda di default all'apertura
-    },
-    created() {
-        // Popola l'elenco degli anni all'avvio
-        this.anniDisponibili = recuperaAnniDisponibili();
-        // Carica i Gran Premi per l'anno di default
-        this.caricaGranPremi();
-    },
-    watch: {
-        // Osserva i cambiamenti sull'anno selezionato per aggiornare i Gran Premi
-        annoSelezionato: function() {
-            this.caricaGranPremi();
-            this.granPremioSelezionato = null; // Reset Gran Premio selezionato
+/**
+ * STATO GLOBALE DELL'APPLICAZIONE E CACHE
+ */
+const statoApp = {
+    annoCorrente: null,
+    chiaveGPCorrente: null,
+    sessioniDelGPCorrente: {}, 
+    cacheDati: {},
+    granPremiDellAnno: [],
+    tutteSessioniPuntiDellAnno: []
+};
+
+
+/**
+ * PUNTO DI PARTENZA
+ */
+document.addEventListener("DOMContentLoaded", () => {
+    console.log("🏁 Avvio F1 Situation Awareness (Cache e Anti-Spam Attivi)...");
+    inizializzaApp();
+    impostaAscoltatoriEventi();
+});
+
+// ==========================================
+// INIZIALIZZAZIONE E GESTIONE EVENTI
+// ==========================================
+
+function inizializzaApp() {
+    const anni = generaAnniSupportati(); 
+    popolaSelectDaJson("select-anno", anni);
+
+    const selectAnno = document.getElementById("select-anno");
+    if (selectAnno && selectAnno.value) {
+        statoApp.annoCorrente = selectAnno.value;
+        caricaGranPremi(statoApp.annoCorrente);
+    }
+}
+
+function impostaAscoltatoriEventi() {
+    document.getElementById("select-anno").addEventListener("change", (evento) => {
+        statoApp.annoCorrente = evento.target.value;
+        caricaGranPremi(statoApp.annoCorrente);
+    });
+
+    document.getElementById("select-gp").addEventListener("change", (evento) => {
+        statoApp.chiaveGPCorrente = evento.target.value;
+        caricaSessioniGranPremio(statoApp.chiaveGPCorrente);
+    });
+
+    document.querySelectorAll(".tab-link").forEach(bottone => {
+        bottone.addEventListener("click", (evento) => {
+            const idSchedaDaAprire = evento.target.getAttribute("data-target");
+            cambiaSchedaAttiva(evento.target, idSchedaDaAprire);
+        });
+    });
+}
+
+// ==========================================
+// ORCHESTRAZIONE DATI 
+// ==========================================
+
+async function caricaGranPremi(anno) {
+    const selectGp = document.getElementById("select-gp");
+    selectGp.innerHTML = '<option value="">⏳ Caricamento GP...</option>';
+
+    // 1. Scarica Gran Premi base
+    const granPremiCrudi = await recuperaGranPremiPerAnno(anno);
+    statoApp.granPremiDellAnno = formattaGranPremiPerSelect(granPremiCrudi);
+    popolaSelectDaJson("select-gp", statoApp.granPremiDellAnno);
+    
+    // 2. Scarica la timeline di TUTTE le sessioni dell'anno (Filtra solo Sprint e Gare)
+    const tutteSessioniCrude = await recuperaTutteSessioniPerAnno(anno);
+    statoApp.tutteSessioniPuntiDellAnno = tutteSessioniCrude
+        .filter(s => {
+            const nome = s.session_name.toLowerCase();
+            return nome === "race" || (nome.includes("sprint") && !nome.includes("shootout") && !nome.includes("qualifying"));
+        })
+        .sort((a, b) => new Date(a.date_start) - new Date(b.date_start)); // Ordine cronologico
+    
+    statoApp.sessioniDelGPCorrente = {};
+    statoApp.cacheDati = {}; 
+}
+
+async function caricaSessioniGranPremio(chiaveGP) {
+    const sessioniCrude = await recuperaSessioniPerGranPremio(chiaveGP);
+    statoApp.sessioniDelGPCorrente = elaboraSessioniDisponibili(sessioniCrude);
+
+    // Svuota la cache globale al cambio di GP
+    statoApp.cacheDati = {}; 
+    console.log("🧹 Cache svuotata per il nuovo Gran Premio.");
+
+    const bottoneClassifiche = document.querySelector('[data-target="scheda-classifiche"]');
+    if (bottoneClassifiche) bottoneClassifiche.click();
+}
+
+async function cambiaSchedaAttiva(bottoneCliccato, idScheda) {
+    aggiornaInterfacciaSchede(bottoneCliccato, idScheda);
+
+    if (idScheda === "scheda-classifiche") {
+        await gestisciSchedaClassifiche(); // <--- AGGIUNTO QUESTO
+    } else if (idScheda === "scheda-libere1") {
+        await gestisciSchedaProveLibere("Practice 1", "libere1");
+    } else if (idScheda === "scheda-libere2") {
+        await gestisciSchedaProveLibere("Practice 2", "libere2");
+    } else if (idScheda === "scheda-libere3") {
+        await gestisciSchedaProveLibere("Practice 3", "libere3");
+    }
+}
+
+/**
+ * Orchestratore specifico per le tabelle delle Prove Libere
+ * CON CACHE E GESTIONE ANTI RATE-LIMIT (429)
+ */
+async function gestisciSchedaProveLibere(nomeSessioneAPI, suffissoId) {
+    const chiaveSessione = statoApp.sessioniDelGPCorrente[nomeSessioneAPI];
+    const idTabella = `tabella-${suffissoId}`;
+    const tabellaDOM = document.getElementById(idTabella);
+
+    if (chiaveSessione) {
+        mostraContenitoreDati(`scheda-${suffissoId}`, true);
+        
+        // ⚡ 1. CONTROLLO CACHE GLOBALE (Nessuna chiamata API se abbiamo già i dati)
+        if (statoApp.cacheDati[chiaveSessione]) {
+            console.log(`⚡ Dati per [${nomeSessioneAPI}] caricati ISTATANEAMENTE dalla cache globale!`);
+            const datiSalvati = statoApp.cacheDati[chiaveSessione];
+            const datiFormattati = elaboraRisultatiProveLibere(datiSalvati.piloti, datiSalvati.giri, datiSalvati.stint);
+            popolaTabellaDaJson(idTabella, datiFormattati);
+            return; 
         }
-    },
-    methods: {
-        /**
-         * Carica i Gran Premi per l'anno selezionato.
-         */
-        caricaGranPremi() {
-            // Chiama la funzione API (asincrona in realtà)
-            this.granPremiDisponibili = recuperaGranPremiPerAnno(this.annoSelezionato);
-        },
 
-        /**
-         * Imposta la scheda attiva.
-         *
-         * @param {string} nomeScheda - Il nome della scheda da aprire.
-         */
-        apriScheda(nomeScheda) {
-            this.schedaAttiva = nomeScheda;
-        },
+        // 📥 2. SCARICA E SALVA (Con Timer per non saturare la banda)
+        if (tabellaDOM) tabellaDOM.innerHTML = "<tr><td class='w3-center w3-padding-16'>⏳ Download dati telemetria... (per evitare sovraccarichi, l'operazione richiede qualche secondo)</td></tr>";
 
-        /**
-         * Verifica se una specifica sessione è presente nel Gran Premio selezionato.
-         * (Verrà implementata successivamente con la logica corretta, per ora restituisce sempre true).
-         *
-         * @param {string} sessione - Il codice della sessione da verificare (es. 'libere1').
-         * @returns {boolean} - True se la sessione è presente, altrimenti False.
-         */
-        sessioneEsistente(sessione) {
-            // Dati segnaposto: per ora assumiamo che tutte le sessioni esistano
-            return true;
+        try {
+            // Prima chiamata: Piloti
+            const pilotiCrudi = await recuperaPiloti(chiaveSessione);
+
+            // Seconda chiamata (pesante): Giri
+            const giriCrudi = await recuperaGiri(chiaveSessione);
+            
+            // Terza chiamata: Gomme
+            const stintCrudi = await recuperaStintGomme(chiaveSessione);
+
+            // Salvataggio in cache
+            statoApp.cacheDati[chiaveSessione] = {
+                piloti: pilotiCrudi,
+                giri: giriCrudi,
+                stint: stintCrudi
+            };
+            console.log(`📥 Dati per [${nomeSessioneAPI}] scaricati in sicurezza e salvati in cache.`);
+
+            // Elaborazione e disegno
+            const datiFormattati = elaboraRisultatiProveLibere(pilotiCrudi, giriCrudi, stintCrudi);
+            popolaTabellaDaJson(idTabella, datiFormattati);
+
+        } catch (errore) {
+            console.error(`Errore durante l'elaborazione di ${nomeSessioneAPI}:`, errore);
+            if (tabellaDOM) tabellaDOM.innerHTML = "<tr><td class='w3-center w3-text-red w3-padding-16'>❌ Impossibile caricare i dati. Il server OpenF1 potrebbe essere irraggiungibile.</td></tr>";
+        }
+
+    } else {
+        mostraContenitoreDati(`scheda-${suffissoId}`, false);
+    }
+}
+
+/**
+ * Orchestratore per le Classifiche: Genera la Matrice analitica per ogni singola sessione.
+ */
+async function gestisciSchedaClassifiche() {
+    const idMessaggio = document.getElementById("classifiche-messaggio");
+    const idContenitore = document.getElementById("contenitore-tabelle-classifiche");
+    
+    if (!statoApp.chiaveGPCorrente || statoApp.tutteSessioniPuntiDellAnno.length === 0) {
+        if (idMessaggio) idMessaggio.innerText = "Seleziona un Gran Premio in alto per caricare le classifiche.";
+        if (idContenitore) idContenitore.style.display = 'none';
+        return;
+    }
+
+    // 1. Trova tutte le Sprint/Gare avvenute DALL'INIZIO DELL'ANNO FINO AL GP SELEZIONATO
+    const indiceGPAttuale = statoApp.granPremiDellAnno.findIndex(gp => gp.valore == statoApp.chiaveGPCorrente);
+    const chiaviGpFinoAdOggi = statoApp.granPremiDellAnno.slice(0, indiceGPAttuale + 1).map(gp => gp.valore);
+    
+    // Estraiamo solo le sessioni che appartengono a questi Gran Premi
+    const sessioniPassate = statoApp.tutteSessioniPuntiDellAnno.filter(s => chiaviGpFinoAdOggi.includes(s.meeting_key));
+
+    const cacheKey = `matrice_classifiche_dettaglio_${statoApp.chiaveGPCorrente}`;
+
+    if (idMessaggio) idMessaggio.style.display = 'block';
+    if (idContenitore) idContenitore.style.display = 'none';
+
+    // ⚡ 2. CONTROLLO CACHE GLOBALE
+    if (statoApp.cacheDati[cacheKey]) {
+        console.log("⚡ Matrice Campionato Dettagliata caricata ISTATANEAMENTE dalla cache!");
+        const dati = statoApp.cacheDati[cacheKey];
+        popolaTabellaDaJson("tabella-classifica-piloti", dati.piloti);
+        popolaTabellaDaJson("tabella-classifica-costruttori", dati.team);
+        if (idMessaggio) idMessaggio.style.display = 'none';
+        if (idContenitore) idContenitore.style.display = 'block';
+        return;
+    }
+
+    // 📥 3. DOWNLOAD PROGRESSIVO
+    if (idMessaggio) idMessaggio.innerHTML = `⏳ Calcolo storico in corso... Analisi di ${sessioniPassate.length} sessioni (Sprint e Gare). <br><span class="w3-tiny">Questa operazione scarica la storia dell'intero campionato, attendere qualche secondo...</span>`;
+
+    try {
+        const storicoPiloti = [];
+        const storicoTeam = [];
+
+        // Cicliamo ogni sessione passata per costruire la cronologia dei punti
+        for (const sessione of sessioniPassate) {
+            let classP = await eseguiRichiestaGenerica("/championship_drivers", `session_key=${sessione.session_key}`);
+            await attendi(150); // Pausa rapida
+            let classT = await eseguiRichiestaGenerica("/championship_teams", `session_key=${sessione.session_key}`);
+            await attendi(150); 
+            
+            // In caso di errore API su una sessione, pushiamo un array vuoto, il Cuoco sa come gestirlo!
+            storicoPiloti.push(Array.isArray(classP) ? classP : []);
+            storicoTeam.push(Array.isArray(classT) ? classT : []);
+        }
+
+        // Recuperiamo le foto dei piloti dall'ultima sessione nota
+        const ultimaSessione = sessioniPassate[sessioniPassate.length - 1];
+        const pilotiCrudi = ultimaSessione ? await recuperaPiloti(ultimaSessione.session_key) : [];
+
+        // 4. ELABORAZIONE MATRICE
+        const matricePiloti = elaboraMatriceCampionatoPiloti(sessioniPassate, storicoPiloti, pilotiCrudi);
+        const matriceTeam = elaboraMatriceCampionatoCostruttori(sessioniPassate, storicoTeam, pilotiCrudi);
+
+        // Salva in Cache
+        statoApp.cacheDati[cacheKey] = { piloti: matricePiloti, team: matriceTeam };
+
+        // 5. DISEGNO A SCHERMO
+        popolaTabellaDaJson("tabella-classifica-piloti", matricePiloti);
+        popolaTabellaDaJson("tabella-classifica-costruttori", matriceTeam);
+
+        if (idMessaggio) idMessaggio.style.display = 'none';
+        if (idContenitore) idContenitore.style.display = 'block';
+
+    } catch (e) {
+        console.error("Errore generazione matrice campionato:", e);
+        if (idMessaggio) {
+            idMessaggio.style.display = 'block';
+            idMessaggio.innerHTML = `<span class="w3-text-red">❌ Impossibile caricare lo storico. Il server ha bloccato troppe richieste o i dati non sono disponibili.</span>`;
         }
     }
-});
+}

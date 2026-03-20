@@ -7,6 +7,12 @@
 const INDIRIZZO_BASE_API = "https://api.openf1.org/v1";
 
 /**
+ * Funzione di utilità per creare una pausa (anti Rate-Limit)
+ * @param {number} ms - Millisecondi di attesa
+ */
+const attendi = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+/**
  * Funzione di supporto interna per eseguire la richiesta HTTP e gestire gli errori.
  * @param {string} percorso - L'endpoint specifico (es. '/laps').
  * @param {number} chiaveSessione - L'identificativo univoco della sessione.
@@ -14,6 +20,7 @@ const INDIRIZZO_BASE_API = "https://api.openf1.org/v1";
  */
 async function eseguiRichiestaGenerica(percorso, query) {
     const urlCorrente = `${INDIRIZZO_BASE_API}${percorso}?${query}`;
+    await attendi(1000);
     
     try {
         const risposta = await fetch(urlCorrente);
@@ -54,6 +61,44 @@ async function recuperaSessioniPerGranPremio(chiaveGranPremio) {
 // ==========================================
 // FUNZIONI ENDPOINT OPENF1
 // ==========================================
+
+/**
+ * Recupera TUTTE le sessioni di un dato anno (utile per costruire la cronologia esatta di Sprint e Gare).
+ * @param {number} anno - L'anno di riferimento (es. 2024).
+ */
+async function recuperaTutteSessioniPerAnno(anno) {
+    return await eseguiRichiestaGenerica("/sessions", `year=${anno}`);
+}
+
+/**
+ * Recupera la classifica Piloti aggiornata alla fine di un intero Gran Premio (Meeting).
+ */
+async function recuperaClassificaPilotiMeeting(chiaveMeeting) {
+    return await eseguiRichiestaGenerica("/championship_drivers", `meeting_key=${chiaveMeeting}`);
+}
+
+/**
+ * Recupera la classifica Costruttori aggiornata alla fine di un intero Gran Premio (Meeting).
+ */
+async function recuperaClassificaCostruttoriMeeting(chiaveMeeting) {
+    return await eseguiRichiestaGenerica("/championship_teams", `meeting_key=${chiaveMeeting}`);
+}
+
+/**
+ * Recupera la classifica Piloti aggiornata a una determinata sessione.
+ * @param {number} chiaveSessione - L'identificativo della sessione (idealmente la Gara).
+ */
+async function recuperaClassificaPiloti(chiaveSessione) {
+    return await eseguiRichiestaGenerica("/championship_drivers", `session_key=${chiaveSessione}`);
+}
+
+/**
+ * Recupera la classifica Costruttori aggiornata a una determinata sessione.
+ * @param {number} chiaveSessione - L'identificativo della sessione (idealmente la Gara).
+ */
+async function recuperaClassificaCostruttori(chiaveSessione) {
+    return await eseguiRichiestaGenerica("/championship_teams", `session_key=${chiaveSessione}`);
+}
 
 /**
  * Recupera l'elenco dei piloti che hanno partecipato a una specifica sessione.
