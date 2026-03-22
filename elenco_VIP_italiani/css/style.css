@@ -1,0 +1,23 @@
+
+.loading-spinner { 
+    display: inline-block; width: 16px; height: 16px; border: 3px solid rgba(0,0,0,.3); 
+    border-radius: 50%; border-top-color: #000; animation: spin 1s ease-in-out infinite; 
+    vertical-align: middle; margin-left: 8px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.nav-bar { overflow-x: auto; white-space: nowrap; scrollbar-width: thin; }
+.medaglia { font-size: 1.5em; }
+.posizione-normale { font-size: 1.2em; font-weight: bold; color: #555; margin-left: 8px;}
+.card-tabella { height: 100%; }
+
+.tab-provincia { background-color: #ff9800 !important; color: white !important; font-weight: bold; }
+.tab-provincia:hover { background-color: #e68a00 !important; }
+
+/* Schermata di caricamento iniziale */
+#boot-screen {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+    background: rgba(255,255,255,0.95); z-index: 9999; 
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+}
+.boot-spinner { width: 50px; height: 50px; border: 5px solid #ccc; border-top-color: #2196F3; border-radius: 50%; animation: spin 1s linear infinite; }
