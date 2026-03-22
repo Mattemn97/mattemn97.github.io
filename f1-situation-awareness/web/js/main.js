@@ -98,13 +98,17 @@ async function cambiaSchedaAttiva(bottoneCliccato, idScheda) {
     aggiornaInterfacciaSchede(bottoneCliccato, idScheda);
 
     if (idScheda === "scheda-classifiche") {
-        await gestisciSchedaClassifiche(); // <--- AGGIUNTO QUESTO
+        await gestisciSchedaClassifiche();
     } else if (idScheda === "scheda-libere1") {
-        await gestisciSchedaProveLibere("Practice 1", "libere1");
+        await gestisciSchedaProveLibere("Prove Libere 1", "libere1");
     } else if (idScheda === "scheda-libere2") {
-        await gestisciSchedaProveLibere("Practice 2", "libere2");
+        await gestisciSchedaProveLibere("Prove Libere 2", "libere2");
     } else if (idScheda === "scheda-libere3") {
-        await gestisciSchedaProveLibere("Practice 3", "libere3");
+        await gestisciSchedaProveLibere("Prove Libere 3", "libere3");
+    }else if (idScheda === "scheda-sprint-quali") {
+        await gestisciSchedaQualifiche("Sprint", "sprint-quali");
+    }else if (idScheda === "scheda-quali") {
+        await gestisciSchedaQualifiche("Qualifiche", "quali");
     }
 }
 
@@ -243,5 +247,62 @@ async function gestisciSchedaClassifiche() {
             idMessaggio.style.display = 'block';
             idMessaggio.innerHTML = `<span class="w3-text-red">❌ Impossibile caricare lo storico. Il server ha bloccato troppe richieste o i dati non sono disponibili.</span>`;
         }
+    }
+}
+
+/**
+ * Orchestratore per la gestione delle Qualifiche (Standard o Sprint).
+ * Include il sistema di Cache Globale e Anti-Spam.
+ */
+async function gestisciSchedaQualifiche(tipoQualifica, suffissoId) {
+    // OpenF1 usa nomi diversi a seconda dell'anno ("Sprint Shootout" o "Sprint Qualifying")
+    let chiaveSessione = null;
+    if (tipoQualifica === "Sprint") {
+        chiaveSessione = statoApp.sessioniDelGPCorrente["Sprint Shootout"] || statoApp.sessioniDelGPCorrente["Sprint Qualifying"];
+    } else {
+        chiaveSessione = statoApp.sessioniDelGPCorrente["Qualifying"];
+    }
+
+    const idTabella = `tabella-${suffissoId}`;
+    const tabellaDOM = document.getElementById(idTabella);
+
+    if (chiaveSessione) {
+        mostraContenitoreDati(`scheda-${suffissoId}`, true);
+        
+        // ⚡ CACHE
+        if (statoApp.cacheDati[chiaveSessione]) {
+            console.log(`⚡ Dati Qualifiche caricati ISTATANEAMENTE dalla cache globale!`);
+            const datiSalvati = statoApp.cacheDati[chiaveSessione];
+            const datiFormattati = elaboraRisultatiQualifiche(datiSalvati.piloti, datiSalvati.giri, datiSalvati.stint);
+            popolaTabellaDaJson(idTabella, datiFormattati);
+            return; 
+        }
+
+        if (tabellaDOM) tabellaDOM.innerHTML = "<tr><td class='w3-center w3-padding-16'>⏳ Analisi dei micro-settori e calcolo Ideal Lap in corso...</td></tr>";
+
+        // 📥 DOWNLOAD SICURO
+        try {
+            const pilotiCrudi = await recuperaPiloti(chiaveSessione);
+            await attendi(500); 
+            const giriCrudi = await recuperaGiri(chiaveSessione);
+            await attendi(500); 
+            const stintCrudi = await recuperaStintGomme(chiaveSessione);
+
+            statoApp.cacheDati[chiaveSessione] = {
+                piloti: pilotiCrudi,
+                giri: giriCrudi,
+                stint: stintCrudi
+            };
+
+            const datiFormattati = elaboraRisultatiQualifiche(pilotiCrudi, giriCrudi, stintCrudi);
+            popolaTabellaDaJson(idTabella, datiFormattati);
+
+        } catch (errore) {
+            console.error(`Errore durante le Qualifiche:`, errore);
+            if (tabellaDOM) tabellaDOM.innerHTML = "<tr><td class='w3-center w3-text-red w3-padding-16'>❌ Impossibile caricare i dati della Qualifica.</td></tr>";
+        }
+
+    } else {
+        mostraContenitoreDati(`scheda-${suffissoId}`, false);
     }
 }
