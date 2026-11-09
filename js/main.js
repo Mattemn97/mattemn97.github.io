@@ -2,6 +2,10 @@
 (function () {
   'use strict';
 
+  // logger condiviso (js/mf-log.js); se manca, i log vengono ignorati
+  var noop = function () {};
+  var log = window.MFLog || { debug: noop, info: noop, warn: noop, error: noop, time: function () { return noop; } };
+
   var GH_USER = 'Mattemn97';
   var SELF_REPO = 'mattemn97.github.io';
   var CAREER_START = new Date(2019, 7, 1); // tirocinio Iveco Defence, ago 2019
@@ -89,7 +93,11 @@
   }
 
   function showTab(name, scroll) {
-    if (tabNames.indexOf(name) === -1) name = 'profilo';
+    if (tabNames.indexOf(name) === -1) {
+      if (name) log.warn('schede', 'Scheda "' + name + '" inesistente, mostro il profilo');
+      name = 'profilo';
+    }
+    log.debug('schede', 'Apro la scheda ' + name);
     tabs.forEach(function (t) {
       var on = t.dataset.tab === name;
       t.setAttribute('aria-selected', on);
@@ -188,16 +196,38 @@
   function getRepos() {
     if (reposPromise) return reposPromise;
     // Prima la copia locale (immediata), poi aggiornamento dalle API di GitHub
+    var endLocal = log.time('progetti', 'Lettura copia locale data/repos.json');
     reposPromise = fetch('data/repos.json')
-      .then(function (r) { return r.ok ? r.json() : []; })
-      .catch(function () { return []; })
+      .then(function (r) {
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        return r.json();
+      })
+      .catch(function (err) {
+        log.warn('progetti', 'Copia locale delle repo non disponibile: ' + err.message);
+        return [];
+      })
       .then(function (local) {
         repos = normalize(local);
+        endLocal({ repo: repos.length });
         onReposChanged('snapshot');
+        var endLive = log.time('progetti', 'Aggiornamento repo dalle API di GitHub');
         return fetch('https://api.github.com/users/' + GH_USER + '/repos?per_page=100&type=owner')
-          .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
-          .then(function (live) { repos = normalize(live); onReposChanged('live'); })
-          .catch(function () { /* resta la copia locale */ });
+          .then(function (r) {
+            if (!r.ok) {
+              var reset = r.headers.get('x-ratelimit-reset');
+              throw new Error('HTTP ' + r.status + (r.status === 403 && reset
+                ? ' (limite di 60 richieste/ora raggiunto, si sblocca alle ' + new Date(reset * 1000).toLocaleTimeString('it-IT') + ')' : ''));
+            }
+            return r.json();
+          })
+          .then(function (live) {
+            repos = normalize(live);
+            endLive({ repo: repos.length, conSito: repos.filter(function (x) { return x.site; }).length });
+            onReposChanged('live');
+          })
+          .catch(function (err) {
+            log.warn('progetti', 'API GitHub non raggiungibile, uso la copia locale (' + repos.length + ' repo): ' + err.message);
+          });
       });
     return reposPromise;
   }
