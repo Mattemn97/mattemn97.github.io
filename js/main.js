@@ -179,7 +179,7 @@
         return {
           name: r.name,
           description: r.description || '',
-          url: r.html_url,
+          url: r.html_url || null, // null: progetto con codice privato, si apre solo il sito
           site: site,
           language: r.language,
           stars: r.stargazers_count || 0,
@@ -192,6 +192,13 @@
         };
       });
   }
+
+  // Progetti con la repository privata: GitHub non li elenca, ma il sito è pubblico.
+  var privati = [];
+  var privatiPromise = fetch('data/progetti-privati.json')
+    .then(function (r) { return r.ok ? r.json() : []; })
+    .then(function (list) { privati = normalize(list); })
+    .catch(function (err) { log.warn('progetti', 'Elenco dei progetti privati non disponibile: ' + err.message); });
 
   function getRepos() {
     if (reposPromise) return reposPromise;
@@ -207,7 +214,10 @@
         return [];
       })
       .then(function (local) {
-        repos = normalize(local);
+        return privatiPromise.then(function () { return local; });
+      })
+      .then(function (local) {
+        repos = normalize(local).concat(privati);
         endLocal({ repo: repos.length });
         onReposChanged('snapshot');
         var endLive = log.time('progetti', 'Aggiornamento repo dalle API di GitHub');
@@ -221,7 +231,7 @@
             return r.json();
           })
           .then(function (live) {
-            repos = normalize(live);
+            repos = normalize(live).concat(privati);
             endLive({ repo: repos.length, conSito: repos.filter(function (x) { return x.site; }).length });
             onReposChanged('live');
           })
@@ -346,6 +356,8 @@
     if (r.site) badges += '<span class="badge live">live</span>';
     if (r.fork) badges += '<span class="badge">fork</span>';
     if (r.archived) badges += '<span class="badge">archiviato</span>';
+    if (!r.url) badges += '<span class="badge" title="Il codice non è pubblico">codice privato</span>';
+    var main = r.url || r.site;
     var topics = r.topics.slice(0, 6).map(function (t) {
       return '<span data-topic="' + esc(t) + '" title="Filtra per ' + esc(t) + '">#' + esc(t) + '</span>';
     }).join('');
@@ -357,7 +369,7 @@
 
     return '<article class="card glow proj" style="--i:' + i + '">' +
       '<div class="proj-head"><i class="fa-regular fa-folder-open"></i>' +
-      '<h3><a href="' + esc(r.url) + '" target="_blank" rel="noopener">' + esc(r.name) + '</a></h3>' +
+      '<h3><a href="' + esc(main) + '" target="_blank" rel="noopener">' + esc(r.name) + '</a></h3>' +
       '<div class="proj-badges">' + badges + '</div></div>' +
       '<p class="proj-desc' + (r.description ? '' : ' empty') + '">' +
       (r.description ? esc(r.description) : 'Nessuna descrizione: apri la repository per scoprire di cosa si tratta.') + '</p>' +
@@ -365,7 +377,7 @@
       '<div class="proj-meta">' + meta.join('') + '</div>' +
       '<div class="proj-links">' +
       (r.site ? '<a class="site" href="' + esc(r.site) + '" target="_blank" rel="noopener"><i class="fa-solid fa-globe"></i> Apri il sito</a>' : '') +
-      '<a href="' + esc(r.url) + '" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i> Repository</a>' +
+      (r.url ? '<a href="' + esc(r.url) + '" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i> Repository</a>' : '') +
       '</div></article>';
   }
 
